@@ -1,5 +1,11 @@
+import BackofficeLayout from "@/components/backofficeLayout";
+
 const MenuCateoryPage = () => {
-  return <h1>MenuCategory Page</h1>;
+  return (
+    <BackofficeLayout>
+      <h1>MenuCategory Page</h1>
+    </BackofficeLayout>
+  );
 };
 
 export default MenuCateoryPage;
