@@ -12,6 +12,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+const defaultNewMenu = {
+  name: "",
+  price: 0,
+  assetUrl: "",
+};
+
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -19,11 +25,7 @@ interface Props {
 }
 
 const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
-  const [menu, setMenu] = useState<CreateMenuPayload>({
-    name: "",
-    price: 0,
-    assetUrl: "",
-  });
+  const [newMenu, setNewMenu] = useState<CreateMenuPayload>(defaultNewMenu);
   //Create menu function
   const createMenu = async () => {
     const response = await fetch(`${config.apiBaseUrl}/menu`, {
@@ -31,12 +33,13 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(menu),
+      body: JSON.stringify(newMenu),
     });
     const menus = await response.json();
 
     //update menus
     setMenus(menus);
+    setNewMenu(defaultNewMenu);
 
     //close dialog box
     setOpen(false);
@@ -73,7 +76,7 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
   const handleNameUpdate = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setMenu({ ...menu, name: evt.target.value });
+    setNewMenu({ ...newMenu, name: evt.target.value });
   };
 
   return (
@@ -96,7 +99,7 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
             sx={{ width: 300, mb: 4 }}
             placeholder="Price"
             onChange={(evt) =>
-              setMenu({ ...menu, price: Number(evt.target.value) })
+              setNewMenu({ ...newMenu, price: Number(evt.target.value) })
             }
           />
           <Button
@@ -104,7 +107,7 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
             sx={{ width: "fit-content" }}
             onClick={createMenu}
           >
-            Create menu
+            Create
           </Button>
         </Box>
       </DialogContent>

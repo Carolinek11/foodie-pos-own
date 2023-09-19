@@ -1,4 +1,4 @@
-import BackofficeLayout from "@/components/backofficeLayout";
+import BackofficeLayout from "../../components/backofficeLayout";
 
 const BackofficeApp = () => {
   return (
