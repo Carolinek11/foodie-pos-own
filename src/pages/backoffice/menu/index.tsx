@@ -5,11 +5,12 @@ import { Menu } from "@/types/menu";
 import MenuCard from "@/components/menuCard/MenuCard";
 import BackofficeLayout from "@/components/backofficeLayout";
 import config from "@/config";
+import { useAppSelector } from "@/store/hooks";
 
 const MenuPage = () => {
-  const [menus, setMenus] = useState<Menu[]>([]);
+  // const [menus, setMenus] = useState<Menu[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  // console.log("Current menus: ", menus);
+  const menus = useAppSelector((store) => store.menu.items);
 
   // call fetchMenus function once at first rendering
   useEffect(() => {
@@ -17,11 +18,11 @@ const MenuPage = () => {
   }, []);
 
   //fetch menus from server
-  const fetchMenus = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/menu`);
-    const menus = await response.json();
-    setMenus(menus);
-  };
+  // const fetchMenus = async () => {
+  //   const response = await fetch(`${config.apiBaseUrl}/menu`);
+  //   const menus = await response.json();
+  //   setMenus(menus);
+  // };
 
   return (
     <BackofficeLayout>
@@ -39,7 +40,7 @@ const MenuPage = () => {
         </Box>
 
         {/* render CreateMenu Component */}
-        <CreateMenu open={open} setOpen={setOpen} setMenus={setMenus} />
+        <CreateMenu open={open} setOpen={setOpen} />
 
         <Box sx={{ display: "flex", flexWrap: "wrap" }}>
           {/* display menu with MenuCard */}

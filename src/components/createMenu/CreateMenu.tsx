@@ -1,6 +1,8 @@
 // CreateMenu Component with MUI Dialog box
 
 import config from "@/config";
+import { useAppDispatch } from "@/store/hooks";
+import { createMenu, setMenus } from "@/store/slices/menuSlice";
 import { CreateMenuPayload, Menu } from "@/types/menu";
 import {
   Box,
@@ -21,24 +23,15 @@ const defaultNewMenu = {
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
-  setMenus: (menus: Menu[]) => void;
 }
 
-const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
+const CreateMenu = ({ open, setOpen }: Props) => {
   const [newMenu, setNewMenu] = useState<CreateMenuPayload>(defaultNewMenu);
+  const dispatch = useAppDispatch();
   //Create menu function
-  const createMenu = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/menu`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newMenu),
-    });
-    const menus = await response.json();
-
+  const handleCreateMenu = async () => {
     //update menus
-    setMenus(menus);
+    dispatch(createMenu(newMenu));
     setNewMenu(defaultNewMenu);
 
     //close dialog box
@@ -105,7 +98,7 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
           <Button
             variant="contained"
             sx={{ width: "fit-content" }}
-            onClick={createMenu}
+            onClick={handleCreateMenu}
           >
             Create
           </Button>

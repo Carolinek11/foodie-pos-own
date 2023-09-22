@@ -5,10 +5,11 @@ import { MenuCategory } from "@/types/menuCategory";
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import CategoryIcon from "@mui/icons-material/Category";
+import { useAppSelector } from "@/store/hooks";
 
 const BackofficeApp = () => {
-  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const menuCategories = useAppSelector((state) => state.menuCategory.items);
   return (
     <BackofficeLayout>
       <Box sx={{ mr: 2 }}>
@@ -25,11 +26,7 @@ const BackofficeApp = () => {
         </Box>
 
         {/* render CreateMenu Component */}
-        <CreateMenuCategory
-          open={open}
-          setOpen={setOpen}
-          setMenuCategories={setMenuCategories}
-        />
+        <CreateMenuCategory open={open} setOpen={setOpen} />
 
         <Box sx={{ display: "flex", flexWrap: "wrap" }}>
           {/* display menu with MenuCard */}

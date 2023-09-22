@@ -1,6 +1,8 @@
 // CreateMenu Component with MUI Dialog box
 
 import config from "@/config";
+import { useAppDispatch } from "@/store/hooks";
+import { createMenuCategory } from "@/store/slices/menuCategorySlice";
 import { CreateMenuCategoryPayload, MenuCategory } from "@/types/menuCategory";
 import {
   Box,
@@ -22,25 +24,17 @@ const defaultNewMenuCategory = {
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
-  setMenuCategories: (menuCategories: MenuCategory[]) => void;
 }
 
-const CreateMenuCategory = ({ open, setOpen, setMenuCategories }: Props) => {
+const CreateMenuCategory = ({ open, setOpen }: Props) => {
   const [newMenuCategory, setNewMenuCategory] =
     useState<CreateMenuCategoryPayload>(defaultNewMenuCategory);
-  //Create menu  category function
-  const createMenuCategory = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/menu-category`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newMenuCategory),
-    });
-    const menuCategories = await response.json();
+  const dispatch = useAppDispatch();
 
+  //Create menu  category function
+  const handleCreateMenuCategory = async () => {
     //update menus
-    setMenuCategories(menuCategories);
+    dispatch(createMenuCategory(newMenuCategory));
 
     setNewMenuCategory(defaultNewMenuCategory);
 
@@ -84,7 +78,7 @@ const CreateMenuCategory = ({ open, setOpen, setMenuCategories }: Props) => {
             <Button
               variant="contained"
               sx={{ width: "fit-content" }}
-              onClick={createMenuCategory}
+              onClick={handleCreateMenuCategory}
             >
               Create
             </Button>
